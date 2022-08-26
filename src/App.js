@@ -1,10 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
 import PlayerCard from "./components/playerCard";
+import AddIcon from "./icon/addIcon";
 
 const testPlayers = [
-  { name: "Antoine", hp: 12 },
-  { name: "Sacha", hp: -5 },
+  { name: "Antoine" },
+  { name: "Sacha" },
+  { name: "François" },
 ];
 
 const StyledMain = styled.div`
@@ -21,12 +23,9 @@ const StyledPlayerContainer = styled.div`
   flex: 1;
 `;
 
-// const StyledHead = styled.div`
-//   height: 5vh;
-// `;
-
 const StyledAddCard = styled.div`
   background-color: grey;
+  border-radius: 10px 10px 20px 2px;
   color: white;
   margin: 10px;
   padding: 10px;
@@ -34,7 +33,7 @@ const StyledAddCard = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  
+
   & input {
     width: 100%;
   }
@@ -48,24 +47,33 @@ function App() {
     setPlayers(players.filter((pl) => pl !== player));
   };
 
+  const addPlayer = () => {
+    setPlayers([...players, { name: newName }]);
+    setNewName("");
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") {
+      addPlayer();
+      console.log("do validate");
+    }
+  };
+
   return (
     <StyledMain>
-      {/* <StyledHead>JIPSY QUINGUE</StyledHead> */}
       <StyledPlayerContainer>
         {players.map((player, i) => (
           <PlayerCard player={player} key={i} deletePlayer={deletePlayer} />
         ))}
       </StyledPlayerContainer>
       <StyledAddCard>
-        <input value={newName} onChange={(e) => setNewName(e.target.value)} />
-        <button
-          onClick={() => {
-            setPlayers([...players, { name: newName }]);
-            setNewName("");
-          }}
-        >
-          Ajouter
-        </button>
+        <input
+          type="text"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          onKeyDown={onKeyDown}
+        />
+        <AddIcon size={40} onClick={() => addPlayer()} />
       </StyledAddCard>
     </StyledMain>
   );

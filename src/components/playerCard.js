@@ -1,25 +1,32 @@
 import { useState } from "react";
 import styled from "styled-components";
+import DeleteIcon from "../icon/delete-icon";
+import MinusIcon from "../icon/minus-icon";
+import PlusIcon from "../icon/plus-icon";
 
 const StyledCard = styled.div`
   background-color: ${({ hp }) => {
     if (hp > 15) {
-      return "#349443";
+      return "#349738";
     } else if (hp > 12) {
-      return "#1EC337";
-    } else if (hp > 7) {
-      return "#94C41D";
+      return "#a6cb66";
+    } else if (hp > 9) {
+      return "#c6ca50";
+    } else if (hp > 6) {
+      return "#fddf87";
     } else if (hp > 3) {
-      return "#E9E611";
+      return "#f0a174";
     } else if (hp > 0) {
-      return "#ECBF0B";
+      return "#f28b32";
     } else if (hp < -3) {
       return "black";
     } else if (hp < 0) {
-      return "red";
+      return "#af1035";
     }
-    return "orange";
+    return "#e84e0f";
   }};
+  border-radius: 10px 10px 20px 2px;
+
   color: white;
   margin: 3px 10px;
   padding: 10px;
@@ -42,18 +49,11 @@ const StyledHp = styled.div`
   margin: 5px;
   width: 40px;
 `;
-const StyledButton = styled.button`
-  margin: 5px;
-  height: 45px;
-  width: 45px;
-  font-size: 30px;
-`;
 
-const StyledDeleteButton = styled.button`
-  margin: 5px;
-  height: 30px;
-  width: 30px;
-  font-size: 20px;
+const ButtonNameWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const PlayerCard = ({ player, deletePlayer }) => {
@@ -61,17 +61,15 @@ const PlayerCard = ({ player, deletePlayer }) => {
 
   return (
     <StyledCard hp={hp}>
-      <div>
-        <StyledDeleteButton onClick={() => deletePlayer(player)}>
-          X
-        </StyledDeleteButton>
+      <ButtonNameWrapper>
+        <DeleteIcon size={30} onClick={() => deletePlayer(player)} />
         <StyledName>{player.name}</StyledName>
-      </div>
+      </ButtonNameWrapper>
 
       <StyledHpBox>
-        <StyledButton onClick={() => setHp(hp - 1)}>-</StyledButton>
+        <MinusIcon size={30} onClick={() => setHp(hp - 1)} />
         <StyledHp>{hp}</StyledHp>
-        <StyledButton onClick={() => setHp(hp + 1)}>+</StyledButton>
+        <PlusIcon size={30} onClick={() => setHp(hp + 1)} />
       </StyledHpBox>
     </StyledCard>
   );
