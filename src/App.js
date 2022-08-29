@@ -4,9 +4,9 @@ import PlayerCard from "./components/playerCard";
 import AddIcon from "./icon/addIcon";
 
 const testPlayers = [
-  { name: "Antoine" },
-  { name: "Sacha" },
-  { name: "François" },
+  { name: "Antoine", hp: 12 },
+  { name: "Sacha", hp: 12 },
+  { name: "François", hp: 12 },
 ];
 
 const StyledMain = styled.div`
@@ -48,22 +48,38 @@ function App() {
   };
 
   const addPlayer = () => {
-    setPlayers([...players, { name: newName }]);
+    setPlayers([...players, { name: newName, hp: 12 }]);
     setNewName("");
   };
 
   const onKeyDown = (e) => {
     if (e.key === "Enter") {
       addPlayer();
-      console.log("do validate");
     }
+  };
+
+  const setHp = (player, updatedHp) => {
+
+    const updatedPlayers = players.reduce((acc, cur) => {
+      if (cur === player) {
+        return [...acc, { ...player, hp: updatedHp }];
+      }
+      return [...acc, cur];
+    }, []);
+
+    setPlayers(updatedPlayers);
   };
 
   return (
     <StyledMain>
       <StyledPlayerContainer>
         {players.map((player, i) => (
-          <PlayerCard player={player} key={i} deletePlayer={deletePlayer} />
+          <PlayerCard
+            player={player}
+            key={i}
+            deletePlayer={deletePlayer}
+            setHp={setHp}
+          />
         ))}
       </StyledPlayerContainer>
       <StyledAddCard>

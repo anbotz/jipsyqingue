@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import DeleteIcon from "../icon/delete-icon";
 import MinusIcon from "../icon/minus-icon";
@@ -56,20 +55,17 @@ const ButtonNameWrapper = styled.div`
   align-items: center;
 `;
 
-const PlayerCard = ({ player, deletePlayer }) => {
-  const [hp, setHp] = useState(12);
-
+const PlayerCard = ({ player, deletePlayer, setHp }) => {
   return (
-    <StyledCard hp={hp}>
+    <StyledCard hp={player.hp}>
       <ButtonNameWrapper>
         <DeleteIcon size={30} onClick={() => deletePlayer(player)} />
         <StyledName>{player.name}</StyledName>
       </ButtonNameWrapper>
-
       <StyledHpBox>
-        <MinusIcon size={30} onClick={() => setHp(hp - 1)} />
-        <StyledHp>{hp}</StyledHp>
-        <PlusIcon size={30} onClick={() => setHp(hp + 1)} />
+        <MinusIcon size={30} onClick={() => setHp(player, player.hp - 1)} />
+        <StyledHp>{player.hp}</StyledHp>
+        <PlusIcon size={30} onClick={() => setHp(player, player.hp + 1)} />
       </StyledHpBox>
     </StyledCard>
   );
