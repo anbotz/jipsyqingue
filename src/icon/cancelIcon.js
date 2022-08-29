@@ -1,4 +1,4 @@
-const PlusIcon = ({ size, onClick }) => {
+const CancelIcon = ({ size, onClick }) => {
   return (
     <div  className="clickable-icon" onClick={onClick}>
       <svg
@@ -23,24 +23,23 @@ const PlusIcon = ({ size, onClick }) => {
         <style xmlns="" lang="en" type="text/css" id="dark-mode-native-style" />
         <style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet" />
         <g id="color">
-          <polygon
-            fill="#D0CFCE"
-            stroke="none"
-            points="31.8532,29.8741 31.8532,12.521 42.1488,12.521 42.1488,29.8805 42.1967,29.8806 46.2484,29.8832 59.6052,29.8832 59.6052,40.1789 46.2562,40.1789 42.1493,40.1762 42.1488,40.206 42.1488,58.8513 31.8532,58.8513 31.8532,40.1694 31.7534,40.1693 27.9357,40.1667 14,40.1667 14,29.8711 27.9331,29.8711 31.7687,29.8737"
+          <path
+            fill="#ea5a47"
+            d="m58.14 21.78-7.76-8.013-14.29 14.22-14.22-14.22-8.013 8.013 14.36 14.22-14.36 14.22 8.014 8.013 14.22-14.22 14.29 14.22 7.76-8.013-14.22-14.22z"
           />
         </g>
         <g id="hair" />
         <g id="skin" />
         <g id="skin-shadow" />
         <g id="line">
-          <polygon
+          <path
             fill="none"
-            stroke="#000000"
+            stroke="#000"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"
             strokeWidth="2"
-            points="31.8532,29.8741 31.8532,12.521 42.1488,12.521 42.1488,29.8805 42.1967,29.8806 46.2484,29.8832 59.6052,29.8832 59.6052,40.1789 46.2562,40.1789 42.1493,40.1762 42.1488,40.206 42.1488,58.8513 31.8532,58.8513 31.8532,40.1694 31.7534,40.1693 27.9357,40.1667 14,40.1667 14,29.8711 27.9331,29.8711 31.7687,29.8737"
+            d="m58.14 21.78-7.76-8.013-14.29 14.22-14.22-14.22-8.013 8.013 14.35 14.22-14.35 14.22 8.014 8.013 14.22-14.22 14.29 14.22 7.76-8.013-14.22-14.22z"
           />
         </g>
       </svg>
@@ -48,4 +47,4 @@ const PlusIcon = ({ size, onClick }) => {
   );
 };
 
-export default PlusIcon;
+export default CancelIcon;

@@ -1,6 +1,6 @@
 const AddIcon = ({ size, onClick }) => {
   return (
-    <div onClick={onClick}>
+    <div className="clickable-icon" onClick={onClick}>
       <svg
         height={size || "72"}
         id="emoji"
@@ -42,10 +42,10 @@ const AddIcon = ({ size, onClick }) => {
             y2="49.5769"
             fill="none"
             stroke="#000000"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-miterlimit="10"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeMiterlimit="10"
+            strokeWidth="2"
           />
           <line
             x1="49.6982"
@@ -54,10 +54,10 @@ const AddIcon = ({ size, onClick }) => {
             y2="35.9518"
             fill="none"
             stroke="#000000"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-miterlimit="10"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeMiterlimit="10"
+            strokeWidth="2"
           />
           <circle
             cx="36.0731"
@@ -65,10 +65,10 @@ const AddIcon = ({ size, onClick }) => {
             r="23"
             fill="none"
             stroke="#000000"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-miterlimit="10"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeMiterlimit="10"
+            strokeWidth="2"
           />
         </g>
       </svg>

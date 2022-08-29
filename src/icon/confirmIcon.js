@@ -1,4 +1,4 @@
-const PlusIcon = ({ size, onClick }) => {
+const ConfirmIcon = ({ size, onClick }) => {
   return (
     <div  className="clickable-icon" onClick={onClick}>
       <svg
@@ -23,24 +23,20 @@ const PlusIcon = ({ size, onClick }) => {
         <style xmlns="" lang="en" type="text/css" id="dark-mode-native-style" />
         <style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet" />
         <g id="color">
-          <polygon
-            fill="#D0CFCE"
-            stroke="none"
-            points="31.8532,29.8741 31.8532,12.521 42.1488,12.521 42.1488,29.8805 42.1967,29.8806 46.2484,29.8832 59.6052,29.8832 59.6052,40.1789 46.2562,40.1789 42.1493,40.1762 42.1488,40.206 42.1488,58.8513 31.8532,58.8513 31.8532,40.1694 31.7534,40.1693 27.9357,40.1667 14,40.1667 14,29.8711 27.9331,29.8711 31.7687,29.8737"
+          <path
+            fill="#b1cc33"
+            d="m61.5 23.3-8.013-8.013-25.71 25.71-9.26-9.26-8.013 8.013 17.42 17.44z"
           />
         </g>
-        <g id="hair" />
-        <g id="skin" />
-        <g id="skin-shadow" />
         <g id="line">
-          <polygon
+          <path
             fill="none"
-            stroke="#000000"
+            stroke="#000"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"
             strokeWidth="2"
-            points="31.8532,29.8741 31.8532,12.521 42.1488,12.521 42.1488,29.8805 42.1967,29.8806 46.2484,29.8832 59.6052,29.8832 59.6052,40.1789 46.2562,40.1789 42.1493,40.1762 42.1488,40.206 42.1488,58.8513 31.8532,58.8513 31.8532,40.1694 31.7534,40.1693 27.9357,40.1667 14,40.1667 14,29.8711 27.9331,29.8711 31.7687,29.8737"
+            d="m10.5 39.76 17.42 17.44 33.58-33.89-8.013-8.013-25.71 25.71-9.26-9.26z"
           />
         </g>
       </svg>
@@ -48,4 +44,4 @@ const PlusIcon = ({ size, onClick }) => {
   );
 };
 
-export default PlusIcon;
+export default ConfirmIcon;

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
+import Modal from "./components/modal";
 import PlayerCard from "./components/playerCard";
 import AddIcon from "./icon/addIcon";
+import RefreshIcon from "./icon/refreshIcon";
 
 const testPlayers = [
   { name: "Antoine", hp: 12 },
@@ -35,13 +37,14 @@ const StyledAddCard = styled.div`
   align-items: center;
 
   & input {
-    width: 100%;
+    width: 80%;
   }
 `;
 
 function App() {
   const [players, setPlayers] = useState(testPlayers);
   const [newName, setNewName] = useState("");
+  const [showResetModal, setShowResetModal] = useState(false);
 
   const deletePlayer = (player) => {
     setPlayers(players.filter((pl) => pl !== player));
@@ -59,7 +62,6 @@ function App() {
   };
 
   const setHp = (player, updatedHp) => {
-
     const updatedPlayers = players.reduce((acc, cur) => {
       if (cur === player) {
         return [...acc, { ...player, hp: updatedHp }];
@@ -68,6 +70,14 @@ function App() {
     }, []);
 
     setPlayers(updatedPlayers);
+  };
+
+  const resetPlayers = () => {
+    const resetPlayers = players.reduce((acc, cur) => {
+      return [...acc, { ...cur, hp: 12 }];
+    }, []);
+
+    setPlayers(resetPlayers);
   };
 
   return (
@@ -90,7 +100,20 @@ function App() {
           onKeyDown={onKeyDown}
         />
         <AddIcon size={40} onClick={() => addPlayer()} />
+        <RefreshIcon
+          size={40}
+          onClick={() => setShowResetModal(!showResetModal)}
+        />
       </StyledAddCard>
+      <Modal
+        isShowing={showResetModal}
+        cancel={() => setShowResetModal(false)}
+        text="Souhaitez vous réinitialiser la partie ?"
+        confirm={() => {
+          resetPlayers();
+          setShowResetModal(false);
+        }}
+      />
     </StyledMain>
   );
 }

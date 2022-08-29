@@ -1,6 +1,6 @@
 const MinusIcon = ({ size, onClick }) => {
   return (
-    <div onClick={onClick}>
+    <div  className="clickable-icon" onClick={onClick}>
       <svg
         height={size || "72"}
         id="emoji"
@@ -41,10 +41,10 @@ const MinusIcon = ({ size, onClick }) => {
             transform="matrix(6.123234e-17 -1 1 6.123234e-17 0.8912 72.4122)"
             fill="none"
             stroke="#000000"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-miterlimit="10"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeMiterlimit="10"
+            strokeWidth="2"
           />
         </g>
       </svg>
