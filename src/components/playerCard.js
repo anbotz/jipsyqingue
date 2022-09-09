@@ -55,7 +55,7 @@ const ButtonNameWrapper = styled.div`
   align-items: center;
 `;
 
-const PlayerCard = ({ player, deletePlayer, setHp }) => {
+const PlayerCard = ({ player, deletePlayer, setHp, finisher }) => {
   return (
     <StyledCard hp={player.hp}>
       <ButtonNameWrapper>
@@ -63,7 +63,13 @@ const PlayerCard = ({ player, deletePlayer, setHp }) => {
         <StyledName>{player.name}</StyledName>
       </ButtonNameWrapper>
       <StyledHpBox>
-        <MinusIcon size={30} onClick={() => setHp(player, player.hp - 1)} />
+        <MinusIcon
+          size={30}
+          onClick={() => {
+            setHp(player, player.hp - 1);
+            finisher();
+          }}
+        />
         <StyledHp>{player.hp}</StyledHp>
         <PlusIcon size={30} onClick={() => setHp(player, player.hp + 1)} />
       </StyledHpBox>
