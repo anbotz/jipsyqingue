@@ -35,28 +35,35 @@ const StyledModal = styled.div`
   margin: auto;
   border-radius: 5px;
   max-width: 500px;
+  max-height: 800px;
   width: 80%;
   padding: 1rem;
   display: flex;
   flex-direction: column;
 `;
+const StyledContent = styled.div`
+  max-height: 500px;
+  overflow-y: scroll;
+`;
 
 const IconContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
-const Modal = ({ isShowing, cancel, confirm, text }) =>
+
+const Modal = ({ isShowing, cancel, confirm, title, text }) =>
   isShowing
     ? ReactDOM.createPortal(
         <StyledModalOverlay>
           <StyledModalWrapper>
             <StyledModal>
-              {text}
+              <h1>{title}</h1>
+              <StyledContent>{text}</StyledContent>
               <IconContainer>
-                <ConfirmIcon onClick={confirm} />
-                <CancelIcon onClick={cancel} />
+                {confirm && <ConfirmIcon onClick={confirm} />}
+                {cancel && <CancelIcon onClick={cancel} />}
               </IconContainer>
             </StyledModal>
           </StyledModalWrapper>
