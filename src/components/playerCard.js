@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import DeleteIcon from "../icon/delete-icon";
 import MinusIcon from "../icon/minus-icon";
 import PlusIcon from "../icon/plus-icon";
+import SkullIcon from "../icon/skullIcon";
 
 const StyledCard = styled.div`
   background-color: ${({ hp }) => {
@@ -55,7 +58,44 @@ const ButtonNameWrapper = styled.div`
   align-items: center;
 `;
 
-const PlayerCard = ({ player, deletePlayer, setHp, finisher }) => {
+const StyledFinisher = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 20px;
+`;
+
+const PlayerCard = ({ player, deletePlayer, setHp }) => {
+  const [finisherCounter, setFinisherCounter] = useState(0);
+
+  const finisher = () => {
+    if (finisherCounter === 0) {
+      setTimeout(() => setFinisherCounter(0), 2000);
+    }
+    setFinisherCounter(finisherCounter + 1);
+  };
+
+  useEffect(() => {
+    if (finisherCounter > 6) {
+      toast(
+        <StyledFinisher>
+          <SkullIcon size="40" />
+          <span>TERMINE LEEEE !!</span>
+          <SkullIcon size="40" />
+        </StyledFinisher>,
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          draggable: true,
+          progress: 1,
+        }
+      );
+      setFinisherCounter(0);
+    }
+  }, [finisherCounter]);
   return (
     <StyledCard hp={player.hp}>
       <ButtonNameWrapper>

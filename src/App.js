@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Modal from "./components/modal";
 import PlayerCard from "./components/playerCard";
 import AddIcon from "./icon/addIcon";
 import QuestionIcon from "./icon/questionIcon";
 import RefreshIcon from "./icon/refreshIcon";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import SkullIcon from "./icon/skullIcon";
 
 const testPlayers = [
   { name: "Antoine", hp: 12 },
@@ -46,20 +45,13 @@ const StyledAddCard = styled.div`
   }
 `;
 
-const StyledFinisher = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: center;
-  font-size: 20px;
-`;
-
 const StyledTitle = styled.h4`
   display: flex;
   align-items: center;
   flex-direction: row;
   justify-content: center;
-  font-size: 50px;
+  font-size: 30px;
+  height: 85px;
   margin: 5px;
 `;
 
@@ -70,7 +62,6 @@ function App() {
   const [newName, setNewName] = useState("");
   const [showResetModal, setShowResetModal] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState(false);
-  const [finisherCounter, setFinisherCounter] = useState(0);
 
   const deletePlayer = (player) => {
     const updatedPlayers = players.filter((pl) => pl !== player);
@@ -109,33 +100,8 @@ function App() {
     }, []);
 
     setPlayers(resetPlayers);
+    localStorage.setItem("players", JSON.stringify(resetPlayers));
   };
-
-  const finisher = () => {
-    setFinisherCounter(finisherCounter + 1);
-    if (finisherCounter === 0) setTimeout(() => setFinisherCounter(0), 3000);
-  };
-
-  useEffect(() => {
-    if (finisherCounter > 6) {
-      toast(
-        <StyledFinisher>
-          <SkullIcon size="40" />
-          <span>TERMINE LEEEE !!</span>
-          <SkullIcon size="40" />
-        </StyledFinisher>,
-        {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          draggable: true,
-          progress: 1,
-        }
-      );
-      setFinisherCounter(0);
-    }
-  }, [finisherCounter]);
 
   return (
     <StyledMain>
@@ -163,7 +129,6 @@ function App() {
             key={i}
             deletePlayer={deletePlayer}
             setHp={setHp}
-            finisher={finisher}
           />
         ))}
       </StyledPlayerContainer>
@@ -250,9 +215,7 @@ function App() {
             </div>
           </>
         }
-        confirm={() => {
-          setShowInstructionModal(false);
-        }}
+        confirm={() => setShowInstructionModal(false)}
       />
     </StyledMain>
   );
