@@ -139,7 +139,7 @@ function App() {
           onChange={(e) => setNewName(e.target.value)}
           onKeyDown={onKeyDown}
         />
-        <AddIcon size={40} onClick={() => addPlayer()} />
+        <AddIcon size={40} onClick={() => newName && addPlayer()} />
         <RefreshIcon
           size={40}
           onClick={() => setShowResetModal(!showResetModal)}
@@ -212,6 +212,9 @@ function App() {
             </div>
             <div>
               <b>Yams:</b> +5PV et attaques aux 5
+            </div>
+            <div>
+              <b>Full sec:</b> +1PV et attaques aux 1 tous les autres
             </div>
           </>
         }
