@@ -1,6 +1,6 @@
-const DeleteIcon = ({ size, onClick }) => {
+const DeleteIcon = ({ size, onClick, layout }) => {
   return (
-    <div  className="clickable-icon" onClick={onClick}>
+    <div  className={(layout === true ? "clickable-icon" : "clickable-icon cornerBasket")} onClick={onClick}>
       <svg
         height={size || "72"}
         id="emoji"

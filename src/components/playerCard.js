@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { Draggable } from '@hello-pangea/dnd';
 import DeleteIcon from "../icon/delete-icon";
 import MinusIcon from "../icon/minus-icon";
 import PlusIcon from "../icon/plus-icon";
@@ -9,21 +10,21 @@ import SkullIcon from "../icon/skullIcon";
 const StyledCard = styled.div`
   background-color: ${({ hp }) => {
     if (hp > 15) {
-      return "#349738";
+      return "#7F4262";
     } else if (hp > 12) {
-      return "#a6cb66";
+      return "#3F5C80";
     } else if (hp > 9) {
-      return "#c6ca50";
+      return "#338056";
     } else if (hp > 6) {
-      return "#fddf87";
+      return "#E6AA5D";
     } else if (hp > 3) {
-      return "#f0a174";
+      return "#F2D877";
     } else if (hp > 0) {
-      return "#f28b32";
+      return "#A72539";
     } else if (hp < -3) {
       return "black";
     } else if (hp < 0) {
-      return "#af1035";
+      return "#878080";
     }
     return "#e84e0f";
   }};
@@ -33,7 +34,13 @@ const StyledCard = styled.div`
   margin: 3px 10px;
   padding: 10px;
   display: flex;
-  flex-direction: row;
+  ${({layout}) => {
+    if(layout === true){
+      return "flex-direction: row; flex: 1 1 auto;";
+    }else{
+      return "width:34%; flex: 1 1 auto; flex-direction: column;"
+    }
+  }}
   justify-content: space-between;
   align-items: center;
 `;
@@ -66,7 +73,7 @@ const StyledFinisher = styled.div`
   font-size: 20px;
 `;
 
-const PlayerCard = ({ player, deletePlayer, setHp }) => {
+const PlayerCard = ({ player, deletePlayer, setHp, index, layout }) => {
   const [finisherCounter, setFinisherCounter] = useState(0);
 
   const finisher = () => {
@@ -97,23 +104,33 @@ const PlayerCard = ({ player, deletePlayer, setHp }) => {
     }
   }, [finisherCounter]);
   return (
-    <StyledCard hp={player.hp}>
-      <ButtonNameWrapper>
-        <DeleteIcon size={30} onClick={() => deletePlayer(player)} />
-        <StyledName>{player.name}</StyledName>
-      </ButtonNameWrapper>
-      <StyledHpBox>
-        <MinusIcon
-          size={30}
-          onClick={() => {
-            setHp(player, player.hp - 1);
-            finisher();
-          }}
-        />
-        <StyledHp>{player.hp}</StyledHp>
-        <PlusIcon size={30} onClick={() => setHp(player, player.hp + 1)} />
-      </StyledHpBox>
-    </StyledCard>
+    <Draggable draggableId={player.name} index={index} key={player.name}>
+      {provided => (
+        <StyledCard 
+          hp={player.hp}
+          layout={layout}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+          >
+          <DeleteIcon size={30} onClick={() => deletePlayer(player)} layout={layout}/>
+          <ButtonNameWrapper>
+            <StyledName>{player.name}</StyledName>
+          </ButtonNameWrapper>
+          <StyledHpBox>
+            <MinusIcon
+              size={30}
+              onClick={() => {
+                setHp(player, player.hp - 1);
+                finisher();
+              }}
+            />
+            <StyledHp>{player.hp}</StyledHp>
+            <PlusIcon size={30} onClick={() => setHp(player, player.hp + 1)} />
+          </StyledHpBox>
+        </StyledCard>
+      )}
+    </Draggable>
   );
 };
 

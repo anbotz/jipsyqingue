@@ -5,14 +5,16 @@ import PlayerCard from "./components/playerCard";
 import AddIcon from "./icon/addIcon";
 import QuestionIcon from "./icon/questionIcon";
 import RefreshIcon from "./icon/refreshIcon";
+import LayoutIcon from "./icon/layoutIcon";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
 const testPlayers = [
-  { name: "Antoine", hp: 12 },
-  { name: "Sacha", hp: 12 },
-  { name: "François", hp: 12 },
-  { name: "Baptiste", hp: 12 },
+  { id:0, name: "Antoine", hp: 12 },
+  { id:1, name: "Sacha", hp: 12 },
+  { id:2, name: "François", hp: 12 },
+  { id:3, name: "Baptiste", hp: 12 },
 ];
 
 const StyledMain = styled.div`
@@ -24,7 +26,6 @@ const StyledMain = styled.div`
 
 const StyledPlayerContainer = styled.div`
   display: flex;
-  flex-direction: column;
   height: 85 vh;
   flex: 1;
 `;
@@ -55,6 +56,33 @@ const StyledTitle = styled.h4`
   margin: 5px;
 `;
 
+const StyledDiceOne = styled.span`
+  font-family: 'dicefont';
+  margin: 10px;
+  transform: rotate(25deg);
+`;
+
+const StyledDiceSix = styled.span`
+  font-family: 'dicefont';
+  margin: 10px;
+  transform: rotate(-35deg);
+`;
+
+const PlayerList = styled.div`
+  display: flex;
+  ${({layout}) => {
+    console.log(layout)
+    if(layout === true){
+      return " flex-direction: column; justify-content: center;";
+    }else{
+      return "flex-wrap: wrap; align-items: flex-start;align-content: flex-start;";
+    }
+  }};
+  height: 85 vh;
+  flex: 1;
+`;
+
+
 function App() {
   const [players, setPlayers] = useState(
     JSON.parse(localStorage.getItem("players")) || testPlayers
@@ -62,16 +90,17 @@ function App() {
   const [newName, setNewName] = useState("");
   const [showResetModal, setShowResetModal] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState(false);
+  const [layout, setLayout] = useState(true);
 
   const deletePlayer = (player) => {
     const updatedPlayers = players.filter((pl) => pl !== player);
-
+    updatedPlayers.map((player, i) => (player.id = i));
     setPlayers(updatedPlayers);
     localStorage.setItem("players", JSON.stringify(updatedPlayers));
   };
 
   const addPlayer = () => {
-    const updatedPlayers = [...players, { name: newName, hp: 12 }];
+    const updatedPlayers = [...players, { id:players.length, name: newName, hp: 12 }];
     setPlayers(updatedPlayers);
     setNewName("");
     localStorage.setItem("players", JSON.stringify(updatedPlayers));
@@ -103,6 +132,35 @@ function App() {
     localStorage.setItem("players", JSON.stringify(resetPlayers));
   };
 
+  const changeLayout = (layout) =>{
+    (layout === true ? setLayout(false) : setLayout(true));
+  }
+
+  //Drag&Drop
+  const onDragEnd = result => {
+    const { destination, source, draggableId } = result;
+
+      if(!destination){
+        return;
+      }
+
+      if(
+        destination.droppableId === source.droppableId &&
+        destination.index === source.index
+      ){
+        return;
+      }
+    
+      const newPlayerIds = Array.from(players);
+      const savedPlayer = newPlayerIds[source.index];
+
+      newPlayerIds.splice(source.index, 1);
+      newPlayerIds.splice(destination.index, 0, savedPlayer);
+
+      newPlayerIds.map((player, i) => (player.id = i));
+      setPlayers(newPlayerIds);
+  };
+
   return (
     <StyledMain>
       <ToastContainer
@@ -121,17 +179,37 @@ function App() {
           borderRadius: "20px",
         }}
       />
-      <StyledTitle>JIPSY QUINGUE</StyledTitle>
-      <StyledPlayerContainer>
-        {players.map((player, i) => (
-          <PlayerCard
-            player={player}
-            key={i}
-            deletePlayer={deletePlayer}
-            setHp={setHp}
-          />
-        ))}
-      </StyledPlayerContainer>
+        <StyledTitle>
+          <StyledDiceOne>!</StyledDiceOne>
+          JIPSY QUINGUE
+          <StyledDiceSix>^</StyledDiceSix>
+        </StyledTitle>
+        <DragDropContext onDragEnd={onDragEnd}>
+          {<StyledPlayerContainer>
+            <Droppable droppableId="droppable">
+              {provided =>(
+                <PlayerList
+                  ref={provided.innerRef} 
+                  {...provided.droppableProps}
+                  layout={layout}
+                >
+                  {players.map((player, i) => (
+                    <PlayerCard
+                      player={player}
+                      key={player.name}
+                      index={i}
+                      deletePlayer={deletePlayer}
+                      setHp={setHp}
+                      layout={layout}
+                    >
+                    </PlayerCard>
+                  ))}
+                {provided.placeholder}
+                </PlayerList>
+              )}
+            </Droppable>
+          </StyledPlayerContainer>}
+        </DragDropContext>
       <StyledAddCard>
         <input
           type="text"
@@ -148,6 +226,9 @@ function App() {
           size={40}
           onClick={() => setShowInstructionModal(!showInstructionModal)}
         />
+        <LayoutIcon 
+          size={40}
+          onClick={() => changeLayout(layout)}/>
       </StyledAddCard>
       <Modal
         isShowing={showResetModal}
