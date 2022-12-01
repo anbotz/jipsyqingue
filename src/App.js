@@ -9,12 +9,14 @@ import LayoutIcon from "./icon/layoutIcon";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
+import OverviewIcon from "./icon/overviewIcon";
 
 const testPlayers = [
   { id:0, name: "Antoine", hp: 12 },
   { id:1, name: "Sacha", hp: 12 },
   { id:2, name: "François", hp: 12 },
   { id:3, name: "Baptiste", hp: 12 },
+  { id:4, name: "Adrien", hp: 12 },
 ];
 
 const StyledMain = styled.div`
@@ -71,7 +73,6 @@ const StyledDiceSix = styled.span`
 const PlayerList = styled.div`
   display: flex;
   ${({layout}) => {
-    console.log(layout)
     if(layout === true){
       return " flex-direction: column; justify-content: center;";
     }else{
@@ -133,7 +134,7 @@ function App() {
   };
 
   const changeLayout = (layout) =>{
-    (layout === true ? setLayout(false) : setLayout(true));
+    setLayout(!layout);
   }
 
   //Drag&Drop
@@ -226,7 +227,7 @@ function App() {
           size={40}
           onClick={() => setShowInstructionModal(!showInstructionModal)}
         />
-        <LayoutIcon 
+        <OverviewIcon 
           size={40}
           onClick={() => changeLayout(layout)}/>
       </StyledAddCard>

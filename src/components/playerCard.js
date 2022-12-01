@@ -8,7 +8,8 @@ import PlusIcon from "../icon/plus-icon";
 import SkullIcon from "../icon/skullIcon";
 
 const StyledCard = styled.div`
-  background-color: ${({ hp }) => {
+
+  /* background-color: ${({ hp }) => {
     if (hp > 15) {
       return "#7F4262";
     } else if (hp > 12) {
@@ -25,6 +26,27 @@ const StyledCard = styled.div`
       return "black";
     } else if (hp < 0) {
       return "#878080";
+    }
+    return "#e84e0f";
+  }};*/
+  
+  background-color: ${({ hp }) => {
+    if (hp > 15) {
+      return "#349738";
+    } else if (hp > 12) {
+      return "#a6cb66";
+    } else if (hp > 9) {
+      return "#c6ca50";
+    } else if (hp > 6) {
+      return "#fddf87";
+    } else if (hp > 3) {
+      return "#f0a174";
+    } else if (hp > 0) {
+      return "#f28b32";
+    } else if (hp < -3) {
+      return "black";
+    } else if (hp < 0) {
+      return "#af1035";
     }
     return "#e84e0f";
   }};
