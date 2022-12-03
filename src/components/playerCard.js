@@ -6,6 +6,10 @@ import DeleteIcon from "../icon/delete-icon";
 import MinusIcon from "../icon/minus-icon";
 import PlusIcon from "../icon/plus-icon";
 import SkullIcon from "../icon/skullIcon";
+import Hell from "../img/hell.gif";
+import Universe from "../img/universe.gif";
+import Niglo from "../img/niglo.webp";
+
 
 const StyledCard = styled.div`
 
@@ -50,6 +54,17 @@ const StyledCard = styled.div`
     }
     return "#e84e0f";
   }};
+
+  ${({ hp }) => {
+    if (hp < -6 && hp >= -12) {
+      return "background-image: url("+Hell+"); background-size: contain;"
+    } else if (hp < -12) {
+      return "background-image: url("+Universe+"); background-size: contain;"
+    } else if (hp > 20 ) {
+      return "background-image: url("+Niglo+"); background-size: contain;"
+    }
+    return ;
+  }}
   border-radius: 10px 10px 20px 2px;
 
   color: white;
