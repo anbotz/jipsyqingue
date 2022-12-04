@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
-import { Draggable } from '@hello-pangea/dnd';
+import { Draggable } from "@hello-pangea/dnd";
 import DeleteIcon from "../icon/delete-icon";
 import MinusIcon from "../icon/minus-icon";
 import PlusIcon from "../icon/plus-icon";
@@ -10,60 +10,64 @@ import Hell from "../img/hell.gif";
 import Universe from "../img/universe.gif";
 import Niglo from "../img/niglo.webp";
 
-
 const StyledCard = styled.div`
+  background-color: ${({ hp, isPandaMode }) => {
+    if (isPandaMode) {
+      if (hp > 20) {
+        return "#338056";
+      } else if (hp > 15) {
+        return "#7F4262";
+      } else if (hp > 12) {
+        return "#3F5C80";
+      } else if (hp > 9) {
+        return "#338056";
+      } else if (hp > 6) {
+        return "#E6AA5D";
+      } else if (hp > 3) {
+        return "#F2D877";
+      } else if (hp > 0) {
+        return "#A72539";
+      } else if (hp < -3) {
+        return "black";
+      } else if (hp < 0) {
+        return "#878080";
+      }
+    } else {
+      if (hp > 20) {
+        return "#c6ca50";
+      } else if (hp > 15) {
+        return "#349738";
+      } else if (hp > 12) {
+        return "#a6cb66";
+      } else if (hp > 9) {
+        return "#c6ca50";
+      } else if (hp > 6) {
+        return "#fddf87";
+      } else if (hp > 3) {
+        return "#f0a174";
+      } else if (hp > 0) {
+        return "#f28b32";
+      } else if (hp < -3) {
+        return "black";
+      } else if (hp < 0) {
+        return "#af1035";
+      }
+    }
 
-  /* background-color: ${({ hp }) => {
-    if (hp > 15) {
-      return "#7F4262";
-    } else if (hp > 12) {
-      return "#3F5C80";
-    } else if (hp > 9) {
-      return "#338056";
-    } else if (hp > 6) {
-      return "#E6AA5D";
-    } else if (hp > 3) {
-      return "#F2D877";
-    } else if (hp > 0) {
-      return "#A72539";
-    } else if (hp < -3) {
-      return "black";
-    } else if (hp < 0) {
-      return "#878080";
-    }
-    return "#e84e0f";
-  }};*/
-  
-  background-color: ${({ hp }) => {
-    if (hp > 15) {
-      return "#349738";
-    } else if (hp > 12) {
-      return "#a6cb66";
-    } else if (hp > 9) {
-      return "#c6ca50";
-    } else if (hp > 6) {
-      return "#fddf87";
-    } else if (hp > 3) {
-      return "#f0a174";
-    } else if (hp > 0) {
-      return "#f28b32";
-    } else if (hp < -3) {
-      return "black";
-    } else if (hp < 0) {
-      return "#af1035";
-    }
     return "#e84e0f";
   }};
 
   ${({ hp }) => {
     if (hp < -6 && hp >= -12) {
-      return "background-image: url("+Hell+"); background-size: contain;"
+      return "background-image: url(" + Hell + "); background-size: contain;";
     } else if (hp < -12) {
-      return "background-image: url("+Universe+"); background-size: contain;"
-    } else if (hp > 20 ) {
-      return "background-image: url("+Niglo+"); background-size: contain;"
+      return (
+        "background-image: url(" + Universe + "); background-size: contain;"
+      );
+    } else if (hp > 20) {
+      return "background-image: url(" + Niglo + "); background-size: contain;";
     }
-    return ;
+    return;
   }}
   border-radius: 10px 10px 20px 2px;
 
@@ -71,11 +75,11 @@ const StyledCard = styled.div`
   margin: 3px 10px;
   padding: 10px;
   display: flex;
-  ${({layout}) => {
-    if(layout === true){
+  ${({ layout }) => {
+    if (layout === true) {
       return "flex-direction: row; flex: 1 1 auto;";
-    }else{
-      return "width:34%; flex: 1 1 auto; flex-direction: column;"
+    } else {
+      return "width:34%; flex: 1 1 auto; flex-direction: column;";
     }
   }}
   justify-content: space-between;
@@ -110,7 +114,14 @@ const StyledFinisher = styled.div`
   font-size: 20px;
 `;
 
-const PlayerCard = ({ player, deletePlayer, setHp, index, layout }) => {
+const PlayerCard = ({
+  player,
+  deletePlayer,
+  setHp,
+  index,
+  layout,
+  isPandaMode,
+}) => {
   const [finisherCounter, setFinisherCounter] = useState(0);
 
   const finisher = () => {
@@ -142,15 +153,20 @@ const PlayerCard = ({ player, deletePlayer, setHp, index, layout }) => {
   }, [finisherCounter]);
   return (
     <Draggable draggableId={player.name} index={index} key={player.name}>
-      {provided => (
-        <StyledCard 
+      {(provided) => (
+        <StyledCard
           hp={player.hp}
           layout={layout}
+          isPandaMode={isPandaMode}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          >
-          <DeleteIcon size={30} onClick={() => deletePlayer(player)} layout={layout}/>
+        >
+          <DeleteIcon
+            size={30}
+            onClick={() => deletePlayer(player)}
+            layout={layout}
+          />
           <ButtonNameWrapper>
             <StyledName>{player.name}</StyledName>
           </ButtonNameWrapper>

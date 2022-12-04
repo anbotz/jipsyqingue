@@ -1,14 +1,15 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Modal from "./components/modal";
-import PlayerCard from "./components/playerCard";
 import AddIcon from "./icon/addIcon";
-import QuestionIcon from "./icon/questionIcon";
 import RefreshIcon from "./icon/refreshIcon";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-import OverviewIcon from "./icon/overviewIcon";
+import GearIcon from "./icon/gearIcon";
+import Settings from "./components/settings";
+import GameMode from "./components/gameMode";
+import ResetModal from "./components/resetModal";
+import RulesModal from "./components/rulesModal";
+import useOnClickOutside from "./hooks/useOnClickOutside";
 
 const testPlayers = [
   { id: 0, name: "Antoine", hp: 12 },
@@ -23,12 +24,6 @@ const StyledMain = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
-`;
-
-const StyledPlayerContainer = styled.div`
-  display: flex;
-  height: 85 vh;
-  flex: 1;
 `;
 
 const StyledAddCard = styled.div`
@@ -69,17 +64,14 @@ const StyledDiceSix = styled.span`
   transform: rotate(-35deg);
 `;
 
-const PlayerList = styled.div`
-  display: flex;
-  ${({ layout }) => {
-    if (layout === true) {
-      return " flex-direction: column; justify-content: center;";
-    } else {
-      return "flex-wrap: wrap; align-items: flex-start;align-content: flex-start;";
-    }
-  }};
-  height: 85 vh;
-  flex: 1;
+const StyledFloatting = styled.div`
+  z-index: 2;
+  position: absolute;
+
+  background-color: white;
+  border-radius: 10px 10px 20px 2px;
+  -webkit-box-shadow: 8px 6px 17px -8px #000000;
+  box-shadow: 8px 6px 17px -8px #000000;
 `;
 
 function App() {
@@ -90,13 +82,8 @@ function App() {
   const [showResetModal, setShowResetModal] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState(false);
   const [layout, setLayout] = useState(true);
-
-  const deletePlayer = (player) => {
-    const updatedPlayers = players.filter((pl) => pl !== player);
-    updatedPlayers.map((player, i) => (player.id = i));
-    setPlayers(updatedPlayers);
-    localStorage.setItem("players", JSON.stringify(updatedPlayers));
-  };
+  const [isPandaMode, setPandaMode] = useState(false);
+  const [isSettingPanelOpen, setSettingPanelOpen, ref] = useOnClickOutside();
 
   const addPlayer = () => {
     const updatedPlayers = [
@@ -114,17 +101,6 @@ function App() {
     }
   };
 
-  const setHp = (player, updatedHp) => {
-    const updatedPlayers = players.reduce((acc, cur) => {
-      if (cur === player) {
-        return [...acc, { ...player, hp: updatedHp }];
-      }
-      return [...acc, cur];
-    }, []);
-
-    setPlayers(updatedPlayers);
-  };
-
   const resetPlayers = () => {
     const resetPlayers = players.reduce((acc, cur) => {
       return [...acc, { ...cur, hp: 12 }];
@@ -132,35 +108,6 @@ function App() {
 
     setPlayers(resetPlayers);
     localStorage.setItem("players", JSON.stringify(resetPlayers));
-  };
-
-  const changeLayout = (layout) => {
-    setLayout(!layout);
-  };
-
-  //Drag&Drop
-  const onDragEnd = (result) => {
-    const { destination, source } = result;
-
-    if (!destination) {
-      return;
-    }
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    const newPlayerIds = Array.from(players);
-    const savedPlayer = newPlayerIds[source.index];
-
-    newPlayerIds.splice(source.index, 1);
-    newPlayerIds.splice(destination.index, 0, savedPlayer);
-
-    newPlayerIds.map((player, i) => (player.id = i));
-    setPlayers(newPlayerIds);
   };
 
   return (
@@ -186,33 +133,7 @@ function App() {
         JIPSY QUINGUE
         <StyledDiceSix>^</StyledDiceSix>
       </StyledTitle>
-      <DragDropContext onDragEnd={onDragEnd}>
-        {
-          <StyledPlayerContainer>
-            <Droppable droppableId="droppable">
-              {(provided) => (
-                <PlayerList
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  layout={layout}
-                >
-                  {players.map((player, i) => (
-                    <PlayerCard
-                      player={player}
-                      key={player.name}
-                      index={i}
-                      deletePlayer={deletePlayer}
-                      setHp={setHp}
-                      layout={layout}
-                    ></PlayerCard>
-                  ))}
-                  {provided.placeholder}
-                </PlayerList>
-              )}
-            </Droppable>
-          </StyledPlayerContainer>
-        }
-      </DragDropContext>
+      <GameMode {...{ players, setPlayers, layout, isPandaMode }} />
       <StyledAddCard>
         <input
           type="text"
@@ -225,83 +146,22 @@ function App() {
           size={40}
           onClick={() => setShowResetModal(!showResetModal)}
         />
-        <QuestionIcon
-          size={40}
-          onClick={() => setShowInstructionModal(!showInstructionModal)}
-        />
-        <OverviewIcon size={40} onClick={() => changeLayout(layout)} />
+        <GearIcon onClick={() => setSettingPanelOpen(!isSettingPanelOpen)} />
       </StyledAddCard>
-      <Modal
-        isShowing={showResetModal}
-        cancel={() => setShowResetModal(false)}
-        text="Souhaitez vous réinitialiser la partie ?"
-        confirm={() => {
-          resetPlayers();
-          setShowResetModal(false);
-        }}
-      />
-      <Modal
-        isShowing={showInstructionModal}
-        title="Règles"
-        text={
-          <>
-            <h3>Principes</h3>
-            <div>Garder au moins 1 dé par lancer</div>
-            <div>
-              <b>Objectifs:</b> faire moins de 10 ou plus de 25
-            </div>
-            <h4>la somme totale des dés est entre 10 et 25 (non compris)</h4>
-            <div>
-              Le joueur perd un nombre de PV égal à la différence entre la somme
-              des 5 dés et l'objectif le plus proche
-            </div>
-            <hr />
-            <i>
-              <b>Ex:</b> Titouan fait 23 (6 + 6 + 6 + 2 + 3), il perd 2PV (25 -
-              23)
-            </i>
-            <h4>
-              la somme totale des dés est supérieure ou égale à 25 ou inférieur
-              ou égale à 10
-            </h4>
-            <div>
-              Le joueur gagne un nombre de PV égal à la différence entre la
-              somme des 5 dés et l'objectif le plus proche. Il choisit ensuite
-              qui attaquer et lance les dés. Tant qu'il obtient des dés avec le
-              résultat obtenu, il les garde et relance les autres. Si il
-              n'obtient pas de dé avec le résultat, son attaque s'arrête.
-              L'attaqué perd la somme des dés obtenus.
-            </div>
-            <hr />
-            <i>
-              <b>Ex:</b> Titouan fait 8 (1 + 2 + 1 + 2 + 2), il gagne 2PV (10 -
-              8). Il décide d'attaquer Spiruline. Son premier lancer est (5 + 4
-              + 2 + 3 + 4). Il garde alors le (2) et relance les 4 autres dés.
-              Il obtient (2 + 4 + 6 + 6). Il garde un (2) supplémentaire et
-              relance. Il n'obtient pas de 2 sur son troisième lancer, son
-              attaque s'arrête donc et Spiruline perd 4PV (2 x 2).
-            </i>
-            <hr />
-            <i>
-              <b>NB:</b> Si Titouan avait réussi à faire 5 dés à 2, il pouvait
-              alors continuer à relancer le dernier dé et continuer à enlever
-              des PV à Spiruline tant qu'il faisait des 2
-            </i>
 
-            <h3>Figures</h3>
-            <div>
-              <b>Suite sèche:</b> +3PV et attaques aux 3
-            </div>
-            <div>
-              <b>Yams:</b> +5PV et attaques aux 5
-            </div>
-            <div>
-              <b>Full sec:</b> +1PV et attaques aux 1 tous les autres
-            </div>
-          </>
-        }
-        confirm={() => setShowInstructionModal(false)}
-      />
+      <ResetModal {...{ showResetModal, setShowResetModal, resetPlayers }} />
+      <RulesModal {...{ showInstructionModal, setShowInstructionModal }} />
+      {isSettingPanelOpen && (
+        <StyledFloatting ref={ref}>
+          <Settings
+            onLayoutClick={() => setLayout(!layout)}
+            onPandaClick={() => setPandaMode(!isPandaMode)}
+            onQuestionClick={() =>
+              setShowInstructionModal(!showInstructionModal)
+            }
+          />
+        </StyledFloatting>
+      )}
     </StyledMain>
   );
 }
