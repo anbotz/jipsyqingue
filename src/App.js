@@ -24,6 +24,24 @@ const StyledMain = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
+  overflow: none;
+`;
+
+const StyledContainer = styled.article`
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+`;
+const ScrollPanel = styled.div`
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  flex-direction: column;
+  flex: 0 0 100%;
 `;
 
 const StyledAddCard = styled.div`
@@ -133,7 +151,11 @@ function App() {
         JIPSY QUINGUE
         <StyledDiceSix>^</StyledDiceSix>
       </StyledTitle>
-      <GameMode {...{ players, setPlayers, layout, isPandaMode }} />
+      <StyledContainer>
+        <ScrollPanel>
+          <GameMode {...{ players, setPlayers, layout, isPandaMode }} />
+        </ScrollPanel>
+      </StyledContainer>
       <StyledAddCard>
         <input
           type="text"
@@ -146,7 +168,10 @@ function App() {
           size={40}
           onClick={() => setShowResetModal(!showResetModal)}
         />
-        <GearIcon onClick={() => setSettingPanelOpen(!isSettingPanelOpen)} />
+        <GearIcon
+          size={40}
+          onClick={() => setSettingPanelOpen(!isSettingPanelOpen)}
+        />
       </StyledAddCard>
 
       <ResetModal {...{ showResetModal, setShowResetModal, resetPlayers }} />

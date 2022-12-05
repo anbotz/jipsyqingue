@@ -12,7 +12,7 @@ const StyledPlayerContainer = styled.div`
 const PlayerList = styled.div`
   display: flex;
   ${({ layout }) => {
-    if (layout === true) {
+    if (layout) {
       return " flex-direction: column; justify-content: center;";
     } else {
       return "flex-wrap: wrap; align-items: flex-start;align-content: flex-start;";
@@ -80,7 +80,7 @@ function GameMode({ players, setPlayers, layout, isPandaMode }) {
                 {players.map((player, i) => (
                   <PlayerCard
                     player={player}
-                    key={player.name}
+                    key={`${player.name}${i}`}
                     index={i}
                     deletePlayer={deletePlayer}
                     setHp={setHp}
