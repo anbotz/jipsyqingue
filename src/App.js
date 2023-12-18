@@ -23,7 +23,7 @@ const StyledMain = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100vh;
+  height: 100dvh;
   overflow: none;
 `;
 
@@ -66,7 +66,7 @@ const StyledTitle = styled.h4`
   flex-direction: row;
   justify-content: center;
   font-size: 30px;
-  height: 85px;
+  height: 55px;
   margin: 5px;
 `;
 
