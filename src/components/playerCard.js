@@ -9,6 +9,7 @@ import SkullIcon from "../icon/skullIcon";
 import Hell from "../img/hell.gif";
 import Universe from "../img/universe.gif";
 import Niglo from "../img/niglo.webp";
+import Queen from "../img/queen.jpg";
 
 const StyledCard = styled.div`
   background-color: ${({ hp, isPandaMode }) => {
@@ -33,7 +34,9 @@ const StyledCard = styled.div`
         return "#878080";
       }
     } else {
-      if (hp > 20) {
+      if (hp === 57) {
+        return "#6E0F12";
+      } else if (hp > 20) {
         return "#c6ca50";
       } else if (hp > 15) {
         return "#349738";
@@ -58,13 +61,15 @@ const StyledCard = styled.div`
   }};
 
   ${({ hp }) => {
-    if (hp < -6 && hp >= -12) {
-      return "background-image: url(" + Hell + "); background-size: contain;";
-    } else if (hp < -12) {
+    if (hp === -18) {
+      return "background-image: url(" + Queen + "); background-size: 80%;";
+    } else if (hp < -12 && hp !== -18) {
       return (
         "background-image: url(" + Universe + "); background-size: contain;"
       );
-    } else if (hp > 20) {
+    } else if (hp < -6 && hp >= -12) {
+      return "background-image: url(" + Hell + "); background-size: contain;";
+    } else if (hp > 20 && hp !== 57) {
       return "background-image: url(" + Niglo + "); background-size: contain;";
     }
     return;
@@ -73,7 +78,7 @@ const StyledCard = styled.div`
 
   color: white;
   margin: 3px 10px;
-  padding: 10px;
+  padding: 10px 20px;
   display: flex;
   ${({ layout }) => {
     if (layout === true) {
@@ -94,10 +99,12 @@ const StyledHpBox = styled.div`
   justify-content: space-between;
   align-items: center;
   text-align: center;
+  height: 100%;
 `;
 const StyledHp = styled.div`
   margin: 5px;
   width: 40px;
+  font-size: 30px;
 `;
 
 const ButtonNameWrapper = styled.div`
@@ -172,14 +179,25 @@ const PlayerCard = ({
           </ButtonNameWrapper>
           <StyledHpBox>
             <MinusIcon
-              size={30}
+              size={50}
               onClick={() => {
+                if (player.hp === 55) {
+                  return setHp(player, 53);
+                }
                 setHp(player, player.hp - 1);
                 finisher();
               }}
             />
             <StyledHp>{player.hp}</StyledHp>
-            <PlusIcon size={30} onClick={() => setHp(player, player.hp + 1)} />
+            <PlusIcon
+              size={50}
+              onClick={() => {
+                if (player.hp === 53) {
+                  return setHp(player, 55);
+                }
+                return setHp(player, player.hp + 1);
+              }}
+            />
           </StyledHpBox>
         </StyledCard>
       )}
