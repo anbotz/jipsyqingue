@@ -9,7 +9,7 @@ import Settings from "./components/settings";
 import GameMode from "./components/gameMode";
 import ResetModal from "./components/resetModal";
 import RulesModal from "./components/rulesModal";
-import useOnClickOutside from "./hooks/useOnClickOutside";
+import Title from "./components/title";
 
 const testPlayers = [
   { id: 0, name: "Antoine", hp: 12 },
@@ -60,53 +60,33 @@ const StyledAddCard = styled.div`
   }
 `;
 
-const StyledTitle = styled.h4`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: center;
-  font-size: 30px;
-  height: 55px;
-  margin: 5px;
-`;
-
-const StyledDiceOne = styled.span`
-  font-family: "dicefont";
-  margin: 10px;
-  transform: rotate(25deg);
-`;
-
-const StyledDiceSix = styled.span`
-  font-family: "dicefont";
-  margin: 10px;
-  transform: rotate(-35deg);
-`;
-
-const StyledFloatting = styled.div`
-  z-index: 2;
-  position: absolute;
-
-  background-color: white;
-  border-radius: 10px 10px 20px 2px;
-  -webkit-box-shadow: 8px 6px 17px -8px #000000;
-  box-shadow: 8px 6px 17px -8px #000000;
-`;
+const GAMES = { jipsy: { startingHp: 12 }, 421: { startingHp: 0 } };
 
 function App() {
   const [players, setPlayers] = useState(
-    JSON.parse(localStorage.getItem("players")) || testPlayers
+    JSON.parse(localStorage.getItem("players")) ?? testPlayers
   );
   const [newName, setNewName] = useState("");
   const [showResetModal, setShowResetModal] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState(false);
   const [layout, setLayout] = useState(true);
   const [isPandaMode, setPandaMode] = useState(false);
-  const [isSettingPanelOpen, setSettingPanelOpen, ref] = useOnClickOutside();
+  const [is421Mode, set421Mode] = useState(
+    JSON.parse(localStorage.getItem("is421Mode")) ?? false
+  );
+  const [isToasterEnable, enableToaster] = useState(
+    JSON.parse(localStorage.getItem("isToasterEnable")) ?? true
+  );
+  const [isSettingPanelOpen, setSettingPanelOpen] = useState(false);
+
+  const GAME = is421Mode ? "421" : "jipsy";
+
+  const startingHp = GAMES[GAME].startingHp;
 
   const addPlayer = () => {
     const updatedPlayers = [
       ...players,
-      { id: players.length, name: newName, hp: 12 },
+      { id: players.length, name: newName, hp: startingHp },
     ];
     setPlayers(updatedPlayers);
     setNewName("");
@@ -121,7 +101,7 @@ function App() {
 
   const resetPlayers = () => {
     const resetPlayers = players.reduce((acc, cur) => {
-      return [...acc, { ...cur, hp: 12 }];
+      return [...acc, { ...cur, hp: startingHp }];
     }, []);
 
     setPlayers(resetPlayers);
@@ -146,14 +126,42 @@ function App() {
           borderRadius: "20px",
         }}
       />
-      <StyledTitle>
-        <StyledDiceOne>!</StyledDiceOne>
-        JIPSY QUINGUE
-        <StyledDiceSix>^</StyledDiceSix>
-      </StyledTitle>
+      <Title {...{ is421Mode }} />
       <StyledContainer>
         <ScrollPanel>
-          <GameMode {...{ players, setPlayers, layout, isPandaMode }} />
+          {isSettingPanelOpen ? (
+            <Settings
+              onLayoutClick={() => setLayout(!layout)}
+              onPandaClick={() => setPandaMode(!isPandaMode)}
+              onQuestionClick={() =>
+                setShowInstructionModal(!showInstructionModal)
+              }
+              on421Click={() => {
+                set421Mode(!is421Mode);
+                localStorage.setItem("is421Mode", JSON.stringify(!is421Mode));
+              }}
+              onEnableToasterClick={() => {
+                console.log(!isToasterEnable);
+                enableToaster(!isToasterEnable);
+                localStorage.setItem(
+                  "isToasterEnable",
+                  JSON.stringify(!isToasterEnable)
+                );
+              }}
+              grid={layout}
+              {...{ is421Mode, isToasterEnable, isPandaMode }}
+            />
+          ) : (
+            <GameMode
+              {...{
+                players,
+                setPlayers,
+                layout,
+                isPandaMode,
+                isToasterEnable,
+              }}
+            />
+          )}
         </ScrollPanel>
       </StyledContainer>
       <StyledAddCard>
@@ -171,22 +179,13 @@ function App() {
         <GearIcon
           size={40}
           onClick={() => setSettingPanelOpen(!isSettingPanelOpen)}
+          toggled={isSettingPanelOpen}
         />
       </StyledAddCard>
-
       <ResetModal {...{ showResetModal, setShowResetModal, resetPlayers }} />
-      <RulesModal {...{ showInstructionModal, setShowInstructionModal }} />
-      {isSettingPanelOpen && (
-        <StyledFloatting ref={ref}>
-          <Settings
-            onLayoutClick={() => setLayout(!layout)}
-            onPandaClick={() => setPandaMode(!isPandaMode)}
-            onQuestionClick={() =>
-              setShowInstructionModal(!showInstructionModal)
-            }
-          />
-        </StyledFloatting>
-      )}
+      <RulesModal
+        {...{ showInstructionModal, setShowInstructionModal, is421Mode }}
+      />
     </StyledMain>
   );
 }

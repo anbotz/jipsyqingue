@@ -22,7 +22,13 @@ const PlayerList = styled.div`
   flex: 1;
 `;
 
-function GameMode({ players, setPlayers, layout, isPandaMode }) {
+function GameMode({
+  players,
+  setPlayers,
+  layout,
+  isPandaMode,
+  isToasterEnable,
+}) {
   const deletePlayer = (player) => {
     const updatedPlayers = players.filter((pl) => pl !== player);
     updatedPlayers.map((player, i) => (player.id = i));
@@ -86,6 +92,7 @@ function GameMode({ players, setPlayers, layout, isPandaMode }) {
                     setHp={setHp}
                     layout={layout}
                     isPandaMode={isPandaMode}
+                    {...{ isToasterEnable }}
                   />
                 ))}
                 {provided.placeholder}

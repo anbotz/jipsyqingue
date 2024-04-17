@@ -1,4 +1,4 @@
-# JIPSY QUINGUE
+# MALIN DICES
 
 Web app to count player's HP for a Dice Game.
 

@@ -128,6 +128,7 @@ const PlayerCard = ({
   index,
   layout,
   isPandaMode,
+  isToasterEnable,
 }) => {
   const [finisherCounter, setFinisherCounter] = useState(0);
 
@@ -139,7 +140,7 @@ const PlayerCard = ({
   };
 
   useEffect(() => {
-    if (finisherCounter > 6) {
+    if (isToasterEnable && finisherCounter > 6) {
       toast(
         <StyledFinisher>
           <SkullIcon size="40" />
@@ -157,7 +158,7 @@ const PlayerCard = ({
       );
       setFinisherCounter(0);
     }
-  }, [finisherCounter]);
+  }, [finisherCounter, isToasterEnable]);
   return (
     <Draggable draggableId={player.name} index={index} key={player.name}>
       {(provided) => (

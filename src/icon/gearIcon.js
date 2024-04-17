@@ -1,6 +1,17 @@
-const GearIcon = ({ size, onClick }) => {
+import styled from "styled-components";
+
+const Clickableicon = styled.div`
+  background-color: ${(props) => props.toggled && "rgba(0,0,0,0.5)"};
+  border-radius: 10px;
+`;
+
+const GearIcon = ({ size, onClick, toggled }) => {
   return (
-    <div className="clickable-icon" onClick={onClick}>
+    <Clickableicon
+      className="clickable-icon"
+      onClick={onClick}
+      toggled={toggled}
+    >
       <svg
         height={size || "72"}
         id="emoji"
@@ -56,7 +67,7 @@ const GearIcon = ({ size, onClick }) => {
           />
         </g>
       </svg>
-    </div>
+    </Clickableicon>
   );
 };
 

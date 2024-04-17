@@ -35,7 +35,7 @@ const StyledModal = styled.div`
   margin: auto;
   border-radius: 5px;
   max-width: 500px;
-  max-height: 800px;
+  max-height: 80dvh;
   width: 80%;
   padding: 1rem;
   display: flex;
@@ -43,7 +43,7 @@ const StyledModal = styled.div`
 `;
 const StyledContent = styled.div`
   max-height: 500px;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 const IconContainer = styled.div`
@@ -51,7 +51,6 @@ const IconContainer = styled.div`
   flex-direction: row;
   justify-content: space-around;
 `;
-
 
 const Modal = ({ isShowing, cancel, confirm, title, text }) =>
   isShowing
