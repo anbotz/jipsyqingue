@@ -1,15 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
-import AddIcon from "./icon/addIcon";
-import RefreshIcon from "./icon/refreshIcon";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import GearIcon from "./icon/gearIcon";
 import Settings from "./components/settings";
 import GameMode from "./components/gameMode";
 import ResetModal from "./components/resetModal";
 import RulesModal from "./components/rulesModal";
 import Title from "./components/title";
+import AppBar from "./components/app-bar";
+import Toast from "./components/toast";
 
 const testPlayers = [
   { id: 0, name: "Antoine", hp: 12 },
@@ -44,60 +41,30 @@ const ScrollPanel = styled.div`
   flex: 0 0 100%;
 `;
 
-const StyledAddCard = styled.div`
-  background-color: grey;
-  border-radius: 10px 10px 20px 2px;
-  color: white;
-  margin: 10px;
-  padding: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-
-  & input {
-    width: 70%;
-  }
-`;
-
 const GAMES = { jipsy: { startingHp: 12 }, 421: { startingHp: 0 } };
 
 function App() {
   const [players, setPlayers] = useState(
     JSON.parse(localStorage.getItem("players")) ?? testPlayers
   );
-  const [newName, setNewName] = useState("");
   const [showResetModal, setShowResetModal] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState(false);
-  const [layout, setLayout] = useState(true);
-  const [isPandaMode, setPandaMode] = useState(false);
-  const [is421Mode, set421Mode] = useState(
-    JSON.parse(localStorage.getItem("is421Mode")) ?? false
-  );
-  const [isToasterEnable, enableToaster] = useState(
-    JSON.parse(localStorage.getItem("isToasterEnable")) ?? true
-  );
+
   const [isSettingPanelOpen, setSettingPanelOpen] = useState(false);
 
-  const GAME = is421Mode ? "421" : "jipsy";
+  const [option, setOption] = useState(
+    JSON.parse(localStorage.getItem("option")) ?? {
+      gridLayout: false,
+      isPandaMode: false,
+      isToasterEnable: true,
+      is421Mode: false,
+      is421NoLimitMode: false,
+    }
+  );
+
+  const GAME = option.is421Mode ? "421" : "jipsy";
 
   const startingHp = GAMES[GAME].startingHp;
-
-  const addPlayer = () => {
-    const updatedPlayers = [
-      ...players,
-      { id: players.length, name: newName, hp: startingHp },
-    ];
-    setPlayers(updatedPlayers);
-    setNewName("");
-    localStorage.setItem("players", JSON.stringify(updatedPlayers));
-  };
-
-  const onKeyDown = (e) => {
-    if (e.key === "Enter") {
-      addPlayer();
-    }
-  };
 
   const resetPlayers = () => {
     const resetPlayers = players.reduce((acc, cur) => {
@@ -110,81 +77,47 @@ function App() {
 
   return (
     <StyledMain>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-        pauseOnHover
-        limit={1}
-        toastStyle={{
-          backgroundColor: "black",
-          color: "white",
-          borderRadius: "20px",
-        }}
-      />
-      <Title {...{ is421Mode }} />
+      <Toast />
+      <Title is421Mode={option.is421Mode} />
       <StyledContainer>
         <ScrollPanel>
           {isSettingPanelOpen ? (
             <Settings
-              onLayoutClick={() => setLayout(!layout)}
-              onPandaClick={() => setPandaMode(!isPandaMode)}
               onQuestionClick={() =>
                 setShowInstructionModal(!showInstructionModal)
               }
-              on421Click={() => {
-                set421Mode(!is421Mode);
-                localStorage.setItem("is421Mode", JSON.stringify(!is421Mode));
+              {...{
+                option,
+                setOption,
               }}
-              onEnableToasterClick={() => {
-                console.log(!isToasterEnable);
-                enableToaster(!isToasterEnable);
-                localStorage.setItem(
-                  "isToasterEnable",
-                  JSON.stringify(!isToasterEnable)
-                );
-              }}
-              grid={layout}
-              {...{ is421Mode, isToasterEnable, isPandaMode }}
             />
           ) : (
             <GameMode
               {...{
                 players,
                 setPlayers,
-                layout,
-                isPandaMode,
-                isToasterEnable,
+                option,
               }}
             />
           )}
         </ScrollPanel>
       </StyledContainer>
-      <StyledAddCard>
-        <input
-          type="text"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          onKeyDown={onKeyDown}
-        />
-        <AddIcon size={40} onClick={() => newName && addPlayer()} />
-        <RefreshIcon
-          size={40}
-          onClick={() => setShowResetModal(!showResetModal)}
-        />
-        <GearIcon
-          size={40}
-          onClick={() => setSettingPanelOpen(!isSettingPanelOpen)}
-          toggled={isSettingPanelOpen}
-        />
-      </StyledAddCard>
+      <AppBar
+        {...{
+          option,
+          players,
+          setPlayers,
+          isSettingPanelOpen,
+          setSettingPanelOpen,
+          showResetModal,
+          setShowResetModal,
+          startingHp,
+        }}
+      />
       <ResetModal {...{ showResetModal, setShowResetModal, resetPlayers }} />
       <RulesModal
-        {...{ showInstructionModal, setShowInstructionModal, is421Mode }}
+        {...{ showInstructionModal, setShowInstructionModal }}
+        is421Mode={option.is421Mode}
       />
     </StyledMain>
   );

@@ -81,10 +81,10 @@ const StyledCard = styled.div`
   padding: 10px 20px;
   display: flex;
   ${({ layout }) => {
-    if (layout === true) {
-      return "flex-direction: row; flex: 1 1 auto;";
-    } else {
+    if (layout) {
       return "width:34%; flex: 1 1 auto; flex-direction: column;";
+    } else {
+      return "flex-direction: row; flex: 1 1 auto;";
     }
   }}
   justify-content: space-between;
@@ -159,6 +159,7 @@ const PlayerCard = ({
       setFinisherCounter(0);
     }
   }, [finisherCounter, isToasterEnable]);
+
   return (
     <Draggable draggableId={player.name} index={index} key={player.name}>
       {(provided) => (

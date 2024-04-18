@@ -13,22 +13,18 @@ const PlayerList = styled.div`
   display: flex;
   ${({ layout }) => {
     if (layout) {
-      return " flex-direction: column; justify-content: center;";
-    } else {
       return "flex-wrap: wrap; align-items: flex-start;align-content: flex-start;";
+    } else {
+      return " flex-direction: column; justify-content: center;";
     }
   }};
   height: 85 vh;
   flex: 1;
 `;
 
-function GameMode({
-  players,
-  setPlayers,
-  layout,
-  isPandaMode,
-  isToasterEnable,
-}) {
+function GameMode({ players, setPlayers, option }) {
+  const { isPandaMode, gridLayout: layout, isToasterEnable } = option;
+
   const deletePlayer = (player) => {
     const updatedPlayers = players.filter((pl) => pl !== player);
     updatedPlayers.map((player, i) => (player.id = i));
