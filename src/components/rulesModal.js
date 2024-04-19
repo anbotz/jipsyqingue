@@ -92,8 +92,8 @@ const FourTwentyOneText = () => {
       :
       <table>
         <tbody>
-          {figures.map((f) => (
-            <tr>
+          {figures.map((f, i) => (
+            <tr key={i}>
               <td>
                 <Dice number={f.dice1} />
               </td>

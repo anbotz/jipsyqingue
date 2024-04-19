@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Dice from "./dice";
+import GearIcon from "../icon/gearIcon";
 
 const StyledTitle = styled.h4`
   display: flex;
@@ -21,12 +22,12 @@ const DiceContainer = styled.div`
 
 const roll = () => Math.floor(Math.random() * 6) + 1;
 
-const Title = ({ is421Mode }) => {
-  const [dices, setDices] = useState(new Array(is421Mode ? 3 : 5).fill(roll()));
+const Title = ({ game, optionScreenOpen, setOptionScreenOpen }) => {
+  const [dices, setDices] = useState([]);
 
   useEffect(() => {
-    setDices(new Array(is421Mode ? 3 : 5).fill(roll()));
-  }, [is421Mode]);
+    setDices(new Array(game?.numberOfDices ?? 0).fill(roll()));
+  }, [game]);
 
   const updateDices = (key) => {
     const updatedValues = dices.map((item, index) =>
@@ -40,11 +41,15 @@ const Title = ({ is421Mode }) => {
     <StyledTitle>
       <div>MALIN DICES</div>
       <DiceContainer>
-        {/* {is421Mode ? "421" : "JipsyQuingue"} */}
         {dices.map((dice, key) => (
           <Dice key={key} number={dice} onClick={() => updateDices(key)} />
         ))}
       </DiceContainer>
+      <GearIcon
+        size={55}
+        onClick={() => setOptionScreenOpen(!optionScreenOpen)}
+        toggled={optionScreenOpen}
+      />
     </StyledTitle>
   );
 };

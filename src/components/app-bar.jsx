@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
-import GearIcon from "../icon/gearIcon";
 import RefreshIcon from "../icon/refreshIcon";
 import AddIcon from "../icon/addIcon";
+import QuestionIcon from "../icon/questionIcon";
 
 const StyledAddCard = styled.div`
   background-color: grey;
@@ -21,30 +21,22 @@ const StyledAddCard = styled.div`
 `;
 
 const AppBar = ({
-  option,
-  players,
-  setPlayers,
-  isSettingPanelOpen,
-  setSettingPanelOpen,
   showResetModal,
   setShowResetModal,
-  startingHp,
+  setShowInstructionModal,
+  showInstructionModal,
+  addPlayer,
 }) => {
   const [newName, setNewName] = useState("");
 
-  const addPlayer = () => {
-    const updatedPlayers = [
-      ...players,
-      { id: players.length, name: newName, hp: startingHp },
-    ];
-    setPlayers(updatedPlayers);
+  const createPlayer = () => {
+    addPlayer(newName);
     setNewName("");
-    localStorage.setItem("players", JSON.stringify(updatedPlayers));
   };
 
   const onKeyDown = (e) => {
     if (e.key === "Enter") {
-      addPlayer();
+      createPlayer();
     }
   };
 
@@ -56,15 +48,14 @@ const AppBar = ({
         onChange={(e) => setNewName(e.target.value)}
         onKeyDown={onKeyDown}
       />
-      <AddIcon size={40} onClick={() => newName && addPlayer()} />
+      <AddIcon size={40} onClick={() => newName && createPlayer()} />
       <RefreshIcon
         size={40}
         onClick={() => setShowResetModal(!showResetModal)}
       />
-      <GearIcon
+      <QuestionIcon
         size={40}
-        onClick={() => setSettingPanelOpen(!isSettingPanelOpen)}
-        toggled={isSettingPanelOpen}
+        onClick={() => setShowInstructionModal(!showInstructionModal)}
       />
     </StyledAddCard>
   );

@@ -1,7 +1,6 @@
 import styled from "styled-components";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import PlayerCard from "./playerCard";
-
-import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
 const StyledPlayerContainer = styled.div`
   display: flex;
@@ -13,35 +12,24 @@ const PlayerList = styled.div`
   display: flex;
   ${({ layout }) => {
     if (layout) {
-      return "flex-wrap: wrap; align-items: flex-start;align-content: flex-start;";
+      return "flex-wrap: wrap; align-items: flex-start; align-content: flex-start;";
     } else {
-      return " flex-direction: column; justify-content: center;";
+      return "flex-direction: column; justify-content: flex-start;";
     }
   }};
   height: 85 vh;
   flex: 1;
 `;
 
-function GameMode({ players, setPlayers, option }) {
-  const { isPandaMode, gridLayout: layout, isToasterEnable } = option;
-
-  const deletePlayer = (player) => {
-    const updatedPlayers = players.filter((pl) => pl !== player);
-    updatedPlayers.map((player, i) => (player.id = i));
-    setPlayers(updatedPlayers);
-    localStorage.setItem("players", JSON.stringify(updatedPlayers));
-  };
-
-  const setHp = (player, updatedHp) => {
-    const updatedPlayers = players.reduce((acc, cur) => {
-      if (cur === player) {
-        return [...acc, { ...player, hp: updatedHp }];
-      }
-      return [...acc, cur];
-    }, []);
-
-    setPlayers(updatedPlayers);
-  };
+function GameMode({
+  players,
+  setPlayers,
+  option,
+  setHp,
+  deletePlayer,
+  decharge,
+}) {
+  const { isPandaMode, gridLayout, isToasterEnable } = option;
 
   //Drag&Drop
   const onDragEnd = (result) => {
@@ -58,13 +46,12 @@ function GameMode({ players, setPlayers, option }) {
       return;
     }
 
-    const newPlayerIds = Array.from(players);
+    const newPlayerIds = [...players];
     const savedPlayer = newPlayerIds[source.index];
 
     newPlayerIds.splice(source.index, 1);
     newPlayerIds.splice(destination.index, 0, savedPlayer);
 
-    newPlayerIds.map((player, i) => (player.id = i));
     setPlayers(newPlayerIds);
   };
 
@@ -77,19 +64,36 @@ function GameMode({ players, setPlayers, option }) {
               <PlayerList
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                layout={layout}
+                layout={gridLayout}
               >
-                {players.map((player, i) => (
+                {decharge && (
                   <PlayerCard
-                    player={player}
-                    key={`${player.name}${i}`}
-                    index={i}
-                    deletePlayer={deletePlayer}
+                    player={decharge}
                     setHp={setHp}
-                    layout={layout}
-                    isPandaMode={isPandaMode}
-                    {...{ isToasterEnable }}
+                    layout={gridLayout}
+                    {...{ isToasterEnable, isPandaMode, deletePlayer }}
                   />
+                )}
+                {players.map((player, i) => (
+                  <Draggable draggableId={player.id} index={i} key={player.id}>
+                    {(provided) => (
+                      <div
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <PlayerCard
+                          {...{
+                            player,
+                            deletePlayer,
+                            setHp,
+                            isPandaMode,
+                            isToasterEnable,
+                          }}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
                 ))}
                 {provided.placeholder}
               </PlayerList>

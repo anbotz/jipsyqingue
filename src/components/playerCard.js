@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
-import { Draggable } from "@hello-pangea/dnd";
 import DeleteIcon from "../icon/delete-icon";
 import MinusIcon from "../icon/minus-icon";
 import PlusIcon from "../icon/plus-icon";
@@ -12,7 +11,8 @@ import Niglo from "../img/niglo.webp";
 import Queen from "../img/queen.jpg";
 
 const StyledCard = styled.div`
-  background-color: ${({ hp, isPandaMode }) => {
+  background-color: ${({ hp, isPandaMode, isTrash }) => {
+    if (isTrash) return "grey";
     if (isPandaMode) {
       if (hp > 20) {
         return "#338056";
@@ -60,7 +60,9 @@ const StyledCard = styled.div`
     return "#e84e0f";
   }};
 
-  ${({ hp }) => {
+  ${({ hp, isTrash }) => {
+    if (isTrash) return;
+
     if (hp === -18) {
       return "background-image: url(" + Queen + "); background-size: 80%;";
     } else if (hp < -12 && hp !== -18) {
@@ -87,6 +89,7 @@ const StyledCard = styled.div`
       return "flex-direction: row; flex: 1 1 auto;";
     }
   }}
+  ${({ isTrash }) => isTrash && "height: 20px; flex: 0;"}
   justify-content: space-between;
   align-items: center;
 `;
@@ -125,11 +128,11 @@ const PlayerCard = ({
   player,
   deletePlayer,
   setHp,
-  index,
   layout,
   isPandaMode,
   isToasterEnable,
 }) => {
+  const { isTrash, hp, name } = player;
   const [finisherCounter, setFinisherCounter] = useState(0);
 
   const finisher = () => {
@@ -161,49 +164,49 @@ const PlayerCard = ({
   }, [finisherCounter, isToasterEnable]);
 
   return (
-    <Draggable draggableId={player.name} index={index} key={player.name}>
-      {(provided) => (
-        <StyledCard
-          hp={player.hp}
+    <StyledCard
+      hp={hp}
+      isTrash={isTrash}
+      layout={layout}
+      isPandaMode={isPandaMode}
+    >
+      {!isTrash && (
+        <DeleteIcon
+          size={30}
+          onClick={() => deletePlayer(player)}
           layout={layout}
-          isPandaMode={isPandaMode}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-        >
-          <DeleteIcon
-            size={30}
-            onClick={() => deletePlayer(player)}
-            layout={layout}
-          />
-          <ButtonNameWrapper>
-            <StyledName>{player.name}</StyledName>
-          </ButtonNameWrapper>
-          <StyledHpBox>
-            <MinusIcon
-              size={50}
-              onClick={() => {
-                if (player.hp === 55) {
-                  return setHp(player, 53);
-                }
-                setHp(player, player.hp - 1);
-                finisher();
-              }}
-            />
-            <StyledHp>{player.hp}</StyledHp>
-            <PlusIcon
-              size={50}
-              onClick={() => {
-                if (player.hp === 53) {
-                  return setHp(player, 55);
-                }
-                return setHp(player, player.hp + 1);
-              }}
-            />
-          </StyledHpBox>
-        </StyledCard>
+        />
       )}
-    </Draggable>
+      <ButtonNameWrapper>
+        <StyledName>{name}</StyledName>
+      </ButtonNameWrapper>
+      <StyledHpBox>
+        {!isTrash && (
+          <MinusIcon
+            size={50}
+            onClick={() => {
+              if (hp === 55) {
+                return setHp(player, -2);
+              }
+              setHp(player, -1);
+              finisher();
+            }}
+          />
+        )}
+        <StyledHp>{hp}</StyledHp>
+        {!isTrash && (
+          <PlusIcon
+            size={50}
+            onClick={() => {
+              if (hp === 53) {
+                return setHp(player, 2);
+              }
+              return setHp(player, 1);
+            }}
+          />
+        )}
+      </StyledHpBox>
+    </StyledCard>
   );
 };
 

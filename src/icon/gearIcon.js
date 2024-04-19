@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const Clickableicon = styled.div`
   background-color: ${(props) => props.toggled && "rgba(0,0,0,0.5)"};
+  size: ${(props) => props.size}px;
   border-radius: 10px;
 `;
 
@@ -11,6 +12,7 @@ const GearIcon = ({ size, onClick, toggled }) => {
       className="clickable-icon"
       onClick={onClick}
       toggled={toggled}
+      size={size}
     >
       <svg
         height={size || "72"}

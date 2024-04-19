@@ -1,20 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Settings from "./components/settings";
-import GameMode from "./components/gameMode";
-import ResetModal from "./components/resetModal";
-import RulesModal from "./components/rulesModal";
 import Title from "./components/title";
-import AppBar from "./components/app-bar";
 import Toast from "./components/toast";
+import HomeScreen from "./screen/home-screen";
+import JipsyScreen from "./screen/jipsy-screen";
+import OptionScreen from "./screen/option-screen";
+import { GAMES } from "./const";
+import FourTwentyOneScreen from "./screen/421-screen";
 
-const testPlayers = [
-  { id: 0, name: "Antoine", hp: 12 },
-  { id: 1, name: "Sacha", hp: 12 },
-  { id: 2, name: "François", hp: 12 },
-  { id: 3, name: "Baptiste", hp: 12 },
-  { id: 4, name: "Adrien", hp: 12 },
-];
+const { FTO, JIPSY } = GAMES;
 
 const StyledMain = styled.div`
   display: flex;
@@ -32,93 +26,46 @@ const StyledContainer = styled.article`
   flex: 1;
   width: 100%;
 `;
-const ScrollPanel = styled.div`
-  display: flex;
-  min-width: 0;
-  min-height: 0;
-  overflow-y: auto;
-  flex-direction: column;
-  flex: 0 0 100%;
-`;
-
-const GAMES = { jipsy: { startingHp: 12 }, 421: { startingHp: 0 } };
 
 function App() {
-  const [players, setPlayers] = useState(
-    JSON.parse(localStorage.getItem("players")) ?? testPlayers
-  );
-  const [showResetModal, setShowResetModal] = useState(false);
-  const [showInstructionModal, setShowInstructionModal] = useState(false);
-
-  const [isSettingPanelOpen, setSettingPanelOpen] = useState(false);
-
   const [option, setOption] = useState(
     JSON.parse(localStorage.getItem("option")) ?? {
       gridLayout: false,
       isPandaMode: false,
       isToasterEnable: true,
-      is421Mode: false,
       is421NoLimitMode: false,
     }
   );
 
-  const GAME = option.is421Mode ? "421" : "jipsy";
-
-  const startingHp = GAMES[GAME].startingHp;
-
-  const resetPlayers = () => {
-    const resetPlayers = players.reduce((acc, cur) => {
-      return [...acc, { ...cur, hp: startingHp }];
-    }, []);
-
-    setPlayers(resetPlayers);
-    localStorage.setItem("players", JSON.stringify(resetPlayers));
-  };
+  const [game, setGame] = useState(JIPSY);
+  const [optionScreenOpen, setOptionScreenOpen] = useState(false);
 
   return (
     <StyledMain>
       <Toast />
-      <Title is421Mode={option.is421Mode} />
+      <Title {...{ optionScreenOpen, setOptionScreenOpen, game }} />
       <StyledContainer>
-        <ScrollPanel>
-          {isSettingPanelOpen ? (
-            <Settings
-              onQuestionClick={() =>
-                setShowInstructionModal(!showInstructionModal)
-              }
-              {...{
-                option,
-                setOption,
-              }}
-            />
-          ) : (
-            <GameMode
-              {...{
-                players,
-                setPlayers,
-                option,
-              }}
-            />
-          )}
-        </ScrollPanel>
+        {optionScreenOpen ? (
+          <OptionScreen
+            {...{ option, setOption }}
+            goHome={() => {
+              setGame(undefined);
+              setOptionScreenOpen(false);
+            }}
+          />
+        ) : (
+          <>
+            {!game ? (
+              <HomeScreen {...{ setGame }} />
+            ) : (
+              <>
+                {game === JIPSY && <JipsyScreen {...{ option }} />}
+                {game === FTO && <FourTwentyOneScreen {...{ option }} />}
+              </>
+            )}
+          </>
+        )}
       </StyledContainer>
-      <AppBar
-        {...{
-          option,
-          players,
-          setPlayers,
-          isSettingPanelOpen,
-          setSettingPanelOpen,
-          showResetModal,
-          setShowResetModal,
-          startingHp,
-        }}
-      />
-      <ResetModal {...{ showResetModal, setShowResetModal, resetPlayers }} />
-      <RulesModal
-        {...{ showInstructionModal, setShowInstructionModal }}
-        is421Mode={option.is421Mode}
-      />
     </StyledMain>
   );
 }

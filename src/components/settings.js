@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import PandaIcon from "../icon/pandaIcon";
 import OverviewIcon from "../icon/overviewIcon";
-import QuestionIcon from "../icon/questionIcon";
 import Switch from "react-switch";
 import ToastIcon from "../icon/toastIcon";
-import DiceIcon from "../icon/dices";
 import UnlimitedIcon from "../icon/unlimitedIcon";
+import DiceIcon from "../icon/dices";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -16,7 +15,7 @@ const StyledContainer = styled.div`
 `;
 
 const StyledItem = styled.div`
-  display: ${(props) => (props.hidden ? "hidden" : "flex")};
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   cursor: pointer;
@@ -25,7 +24,6 @@ const StyledItem = styled.div`
   height: 72px;
 
   padding: 2px 20px;
-  padding-left: ${(props) => props.tab && "72px"};
 
   :hover {
     background-color: #e6e6e6;
@@ -45,14 +43,8 @@ const Item = ({ onClick, label, checked, icon, tab, hidden }) => {
   );
 };
 
-const Settings = ({ onQuestionClick, option, setOption }) => {
-  const {
-    is421NoLimitMode,
-    isToasterEnable,
-    isPandaMode,
-    gridLayout,
-    is421Mode,
-  } = option;
+const Settings = ({ option, setOption, goHome }) => {
+  const { is421NoLimitMode, isToasterEnable, isPandaMode, gridLayout } = option;
 
   const updateOption = (value) => {
     const updatedOption = {
@@ -78,18 +70,10 @@ const Settings = ({ onQuestionClick, option, setOption }) => {
       icon: <PandaIcon />,
     },
     {
-      onClick: () => updateOption("is421Mode"),
-      label: "Mode 421",
-      checked: is421Mode,
-      icon: <DiceIcon />,
-    },
-    {
       onClick: () => updateOption("is421NoLimitMode"),
       label: "Variant du 421 : No limite",
       checked: is421NoLimitMode,
       icon: <UnlimitedIcon />,
-      tab: true,
-      hidden: !is421Mode,
     },
     {
       onClick: () => updateOption("isToasterEnable"),
@@ -98,11 +82,12 @@ const Settings = ({ onQuestionClick, option, setOption }) => {
       icon: <ToastIcon />,
     },
     {
-      onClick: onQuestionClick,
-      label: "Règles",
-      icon: <QuestionIcon />,
+      onClick: goHome,
+      label: "Changer de jeu",
+      icon: <DiceIcon />,
     },
   ];
+
   return (
     <div>
       {itemsData.map((item, index) => (
@@ -112,8 +97,6 @@ const Settings = ({ onQuestionClick, option, setOption }) => {
           label={item.label}
           checked={item.checked}
           icon={item.icon}
-          tab={item.tab}
-          hidden={item.hidden}
         />
       ))}
     </div>
