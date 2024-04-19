@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Dice from "./dice";
-import GearIcon from "../icon/gearIcon";
+import GearIcon from "../icon/gear";
 
 const StyledTitle = styled.h4`
   display: flex;

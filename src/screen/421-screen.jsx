@@ -1,7 +1,7 @@
 import { useState } from "react";
-import GameMode from "../components/gameMode";
-import ResetModal from "../components/resetModal";
-import RulesModal from "../components/rulesModal";
+import GameMode from "../components/game-mode";
+import ResetModal from "../components/reset-modal";
+import RulesModal from "../components/rules-modal";
 import AppBar from "../components/app-bar";
 import styled from "styled-components";
 

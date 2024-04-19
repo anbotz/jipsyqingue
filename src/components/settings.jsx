@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import PandaIcon from "../icon/pandaIcon";
-import OverviewIcon from "../icon/overviewIcon";
+import PandaIcon from "../icon/panda";
+import OverviewIcon from "../icon/overview";
 import Switch from "react-switch";
-import ToastIcon from "../icon/toastIcon";
-import UnlimitedIcon from "../icon/unlimitedIcon";
+import ToastIcon from "../icon/toast";
+import UnlimitedIcon from "../icon/unlimited";
 import DiceIcon from "../icon/dices";
 
 const StyledContainer = styled.div`

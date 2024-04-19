@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
-import DeleteIcon from "../icon/delete-icon";
-import MinusIcon from "../icon/minus-icon";
-import PlusIcon from "../icon/plus-icon";
-import SkullIcon from "../icon/skullIcon";
+import DeleteIcon from "../icon/delete";
+import MinusIcon from "../icon/minus";
+import PlusIcon from "../icon/plus";
+import SkullIcon from "../icon/skull";
 import Hell from "../img/hell.gif";
 import Universe from "../img/universe.gif";
 import Niglo from "../img/niglo.webp";

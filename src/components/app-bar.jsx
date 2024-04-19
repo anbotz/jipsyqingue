@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
-import RefreshIcon from "../icon/refreshIcon";
-import AddIcon from "../icon/addIcon";
-import QuestionIcon from "../icon/questionIcon";
+import RefreshIcon from "../icon/refresh";
+import AddIcon from "../icon/add";
+import QuestionIcon from "../icon/question";
 
 const StyledAddCard = styled.div`
   background-color: grey;

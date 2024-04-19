@@ -1,10 +1,10 @@
 import React from "react";
-import NumberOneIcon from "../icon/numberOneIcon";
-import NumberTwoIcon from "../icon/numberTwoIcon";
-import NumberThreeIcon from "../icon/numberThreeIcon";
-import NumberFourIcon from "../icon/numberFourIcon";
-import NumberFiveIcon from "../icon/numberFiveIcon";
-import NumberSixIcon from "../icon/numberSixIcon";
+import NumberOneIcon from "../icon/number-1";
+import NumberTwoIcon from "../icon/number-2";
+import NumberThreeIcon from "../icon/number-3";
+import NumberFourIcon from "../icon/number-4";
+import NumberFiveIcon from "../icon/number-5";
+import NumberSixIcon from "../icon/number-6";
 
 const Dice = ({ number, onClick }) => {
   const SIZE = 40;

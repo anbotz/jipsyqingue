@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import CancelIcon from "../icon/cancelIcon";
-import ConfirmIcon from "../icon/confirmIcon";
+import CancelIcon from "../icon/cancel";
+import ConfirmIcon from "../icon/confirm";
 
 const StyledModalOverlay = styled.div`
   position: fixed;

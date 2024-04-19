@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
-import PlayerCard from "./playerCard";
+import PlayerCard from "./player-card";
 
 const StyledPlayerContainer = styled.div`
   display: flex;
