@@ -3,40 +3,11 @@ const NumberOneIcon = ({ size, onClick }) => {
     <div className="clickable-icon" onClick={onClick}>
       <svg
         height={size || "72"}
-        id="emoji"
-        viewBox="0 0 72 72"
-        xmlns="http://www.w3.org/2000/svg"
+        width={size || "72"}
+        viewBox="0 0 32 32"
+        fill="currentColor"
       >
-        <g id="color">
-          <rect
-            x="11.875"
-            y="12.291"
-            width="48"
-            height="47.834"
-            fill="#d0cfce"
-          />
-        </g>
-        <g id="line">
-          <rect
-            x="12.125"
-            y="12.041"
-            width="48"
-            height="48"
-            fill="none"
-            stroke="#000"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-          />
-          <polyline
-            fill="none"
-            stroke="#000"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            points="31.664 30.895 36.464 27.305 36.586 44.777"
-          />
-        </g>
+        <path d="M27.299 2.246h-22.65c-1.327 0-2.402 1.076-2.402 2.402v22.65c0 1.327 1.076 2.402 2.402 2.402h22.65c1.327 0 2.402-1.076 2.402-2.402v-22.65c0-1.327-1.076-2.402-2.402-2.402zM15.974 19.093c-1.723 0-3.12-1.397-3.12-3.12s1.397-3.12 3.12-3.12 3.12 1.397 3.12 3.12-1.397 3.12-3.12 3.12z"></path>
       </svg>
     </div>
   );

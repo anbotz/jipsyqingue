@@ -3,51 +3,11 @@ const NumberFourIcon = ({ size, onClick }) => {
     <div className="clickable-icon" onClick={onClick}>
       <svg
         height={size || "72"}
-        id="emoji"
-        viewBox="0 0 72 72"
-        xmlns="http://www.w3.org/2000/svg"
+        width={size || "72"}
+        viewBox="0 0 32 32"
+        fill="currentColor"
       >
-        <g id="color">
-          <rect
-            x="11.875"
-            y="12.2913"
-            width="48"
-            height="47.834"
-            fill="#d0cfce"
-          />
-        </g>
-        <g id="line">
-          <rect
-            x="12.125"
-            y="12.0413"
-            width="48"
-            height="48"
-            fill="none"
-            stroke="#000"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-          />
-          <polyline
-            fill="none"
-            stroke="#000"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            points="37.502 27.34 31.036 41.96 41.214 41.96"
-          />
-          <line
-            x1="39.5379"
-            x2="39.5379"
-            y1="36.5708"
-            y2="44.7422"
-            fill="none"
-            stroke="#000"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-          />
-        </g>
+        <path d="M27.299 2.246h-22.65c-1.327 0-2.402 1.076-2.402 2.402v22.65c0 1.327 1.076 2.402 2.402 2.402h22.65c1.327 0 2.402-1.076 2.402-2.402v-22.65c0-1.327-1.076-2.402-2.402-2.402zM7.613 27.455c-1.723 0-3.12-1.397-3.12-3.12s1.397-3.12 3.12-3.12 3.12 1.397 3.12 3.12-1.397 3.12-3.12 3.12zM7.613 10.732c-1.723 0-3.12-1.397-3.12-3.12s1.397-3.12 3.12-3.12 3.12 1.397 3.12 3.12-1.397 3.12-3.12 3.12zM24.335 27.455c-1.723 0-3.12-1.397-3.12-3.12s1.397-3.12 3.12-3.12 3.12 1.397 3.12 3.12c-0 1.723-1.397 3.12-3.12 3.12zM24.335 10.732c-1.723 0-3.12-1.397-3.12-3.12s1.397-3.12 3.12-3.12 3.12 1.397 3.12 3.12c-0 1.723-1.397 3.12-3.12 3.12z"></path>
       </svg>
     </div>
   );

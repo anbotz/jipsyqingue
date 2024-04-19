@@ -3,34 +3,11 @@ const NumberTwoIcon = ({ size, onClick }) => {
     <div className="clickable-icon" onClick={onClick}>
       <svg
         height={size || "72"}
-        id="emoji"
-        viewBox="0 0 72 72"
-        xmlns="http://www.w3.org/2000/svg"
+        width={size || "72"}
+        viewBox="0 0 32 32"
+        fill="currentColor"
       >
-        <g id="color">
-          <rect x="12" y="12.1663" width="48" height="47.834" fill="#d0cfce" />
-        </g>
-        <g id="line">
-          <rect
-            x="12.25"
-            y="11.9163"
-            width="48"
-            height="48"
-            fill="none"
-            stroke="#000"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-          />
-          <path
-            fill="none"
-            stroke="#000"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M31.03,31.4978a5.33,5.33,0,0,1,5.22-4.2544h0a5.3116,5.3116,0,0,1,3.7675,1.5606,4.1147,4.1147,0,0,1-.0458,5.5792l-9.05,10.206H41.5781"
-          />
-        </g>
+        <path d="M27.299 2.246h-22.65c-1.327 0-2.402 1.076-2.402 2.402v22.65c0 1.327 1.076 2.402 2.402 2.402h22.65c1.327 0 2.402-1.076 2.402-2.402v-22.65c0-1.327-1.076-2.402-2.402-2.402zM7.613 27.455c-1.723 0-3.12-1.397-3.12-3.12s1.397-3.12 3.12-3.12 3.12 1.397 3.12 3.12-1.397 3.12-3.12 3.12zM24.335 10.732c-1.723 0-3.12-1.397-3.12-3.12s1.397-3.12 3.12-3.12 3.12 1.397 3.12 3.12c-0 1.723-1.397 3.12-3.12 3.12z"></path>
       </svg>
     </div>
   );
