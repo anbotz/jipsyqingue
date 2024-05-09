@@ -40,30 +40,28 @@ function JipsyScreen({ option }) {
   const [showResetModal, setShowResetModal] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState(false);
 
-  const updatePlayersStorage = (u) =>
+  const updatePlayers = (u) => {
+    setPlayers(u);
     localStorage.setItem("players", JSON.stringify(u));
-
+  };
   const addPlayer = (newName) => {
     const updatedPlayers = [
       ...players,
       { id: v4(), name: newName, hp: STARTING_HP },
     ];
 
-    setPlayers(updatedPlayers);
-    updatePlayersStorage(updatedPlayers);
+    updatePlayers(updatedPlayers);
   };
 
   const deletePlayer = (player) => {
     const updatedPlayers = players.filter((pl) => pl !== player);
-    setPlayers(updatedPlayers);
-    updatePlayersStorage(updatedPlayers);
+    updatePlayers(updatedPlayers);
   };
 
   const resetPlayers = () => {
     const resetPlayers = players.map((pl) => ({ ...pl, hp: STARTING_HP }));
 
-    setPlayers(resetPlayers);
-    updatePlayersStorage(resetPlayers);
+    updatePlayers(resetPlayers);
   };
 
   const setHp = (currentPlayer, updatedHp) => {
@@ -74,7 +72,7 @@ function JipsyScreen({ option }) {
       return pl;
     });
 
-    setPlayers(updatedPlayers);
+    updatePlayers(updatedPlayers);
   };
 
   return (
