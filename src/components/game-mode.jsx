@@ -5,14 +5,16 @@ import PlayerCard from "./player-card";
 const StyledPlayerContainer = styled.div`
   display: flex;
   height: 85 vh;
-  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
 `;
 
 const PlayerList = styled.div`
   display: flex;
   ${({ layout }) => {
     if (layout) {
-      return "flex-wrap: wrap; align-items: flex-start; align-content: flex-start;";
+      return `display: grid;
+      grid-template-columns: auto auto;`;
     } else {
       return "flex-direction: column; justify-content: flex-start;";
     }
@@ -59,6 +61,14 @@ function GameMode({
     <DragDropContext onDragEnd={onDragEnd}>
       {
         <StyledPlayerContainer>
+          {decharge && (
+            <PlayerCard
+              player={decharge}
+              setHp={setHp}
+              layout={gridLayout}
+              {...{ isToasterEnable, isPandaMode, deletePlayer }}
+            />
+          )}
           <Droppable droppableId="droppable">
             {(provided) => (
               <PlayerList
@@ -66,14 +76,6 @@ function GameMode({
                 {...provided.droppableProps}
                 layout={gridLayout}
               >
-                {decharge && (
-                  <PlayerCard
-                    player={decharge}
-                    setHp={setHp}
-                    layout={gridLayout}
-                    {...{ isToasterEnable, isPandaMode, deletePlayer }}
-                  />
-                )}
                 {players.map((player, i) => (
                   <Draggable draggableId={player.id} index={i} key={player.id}>
                     {(provided) => (
@@ -90,6 +92,7 @@ function GameMode({
                             isPandaMode,
                             isToasterEnable,
                           }}
+                          layout={gridLayout}
                         />
                       </div>
                     )}

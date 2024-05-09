@@ -82,14 +82,14 @@ const StyledCard = styled.div`
   margin: 3px 10px;
   padding: 10px 20px;
   display: flex;
-  ${({ layout }) => {
+  ${({ layout, isTrash }) => {
+    if (isTrash) {
+      return "height: 20px; flex: 0;";
+    }
     if (layout) {
-      return "width:34%; flex: 1 1 auto; flex-direction: column;";
-    } else {
-      return "flex-direction: row; flex: 1 1 auto;";
+      return "flex-direction: column; flex: 1";
     }
   }}
-  ${({ isTrash }) => isTrash && "height: 20px; flex: 0;"}
   justify-content: space-between;
   align-items: center;
 `;
